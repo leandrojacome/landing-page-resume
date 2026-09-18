@@ -1,0 +1,25 @@
+version: "3.8"
+services:
+  web:
+    image: landing-page-resume:latest
+    ports:
+      - target: 80
+        published: 8086
+        protocol: tcp
+        mode: ingress
+    networks:
+      - resume_net
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == srv1798039
+      restart_policy:
+        condition: on-failure
+      update_config:
+        order: start-first
+        failure_action: rollback
+networks:
+  resume_net:
+    driver: overlay
+    attachable: false
